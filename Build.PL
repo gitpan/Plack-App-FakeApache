@@ -7,6 +7,7 @@ my $build = Module::Build->new(
     module_name => 'Plack::App::FakeApache',
 
     requires    => {
+        'Moose'      => 0,
         'Plack'      => 0,
         'APR::Pool'  => 0,
         'APR::Table' => 0,

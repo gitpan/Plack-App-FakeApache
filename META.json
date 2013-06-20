@@ -1,0 +1,56 @@
+{
+   "abstract" : "Wrapping mod_perl2 applications in Plack",
+   "author" : [
+      "Peter Makholm, L<peter@makholm.net>"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.120921",
+   "license" : [
+      "unknown"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Plack-App-FakeApache",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.38"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "APR::Pool" : "0",
+            "APR::Table" : "0",
+            "Moose" : "0",
+            "Plack" : "0"
+         }
+      }
+   },
+   "provides" : {
+      "Plack::App::FakeApache" : {
+         "file" : "lib/Plack/App/FakeApache.pm",
+         "version" : "0.03"
+      },
+      "Plack::App::FakeApache::Request" : {
+         "file" : "lib/Plack/App/FakeApache/Request.pm",
+         "version" : 0
+      },
+      "Plack::App::FakeApache::Tie" : {
+         "file" : "lib/Plack/App/FakeApache.pm",
+         "version" : 0
+      },
+      "Plack::App::WrapApacheReq" : {
+         "file" : "lib/Plack/App/WrapApacheReq.pm",
+         "version" : "0"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "repository" : {
+         "url" : "http://github.com/pmakholm/plack-app-wrapapachereq/tree/master"
+      }
+   },
+   "version" : "0.03"
+}

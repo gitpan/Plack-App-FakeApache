@@ -8,3 +8,4 @@ lib/Plack/App/FakeApache/Request.pm
 lib/Plack/App/WrapApacheReq.pm
 MANIFEST			This list of files
 META.yml
+META.json

@@ -9,6 +9,13 @@ use HTTP::Status qw(:is);
 
 use Plack::Request;
 use Plack::Response;
+use Plack::App::File;
+
+use Plack::App::FakeApache::Connection;
+use Plack::App::FakeApache::Log;
+use Plack::App::FakeApache::Server;
+use Cwd qw(cwd);
+use URI;
 
 my $NS = "plack.app.fakeapache";
 
@@ -26,7 +33,6 @@ has plack_request => (
     handles    => {
         method       => 'method',
         unparsed_uri => 'request_uri',
-        uri          => 'path',
         user         => 'user',
     },
 );
@@ -41,6 +47,17 @@ has plack_response => (
         content_encoding => 'content_encoding',
         status           => 'status',
     },
+);
+
+has log => (
+    is      => 'rw',
+    default => sub { Plack::App::FakeApache::Log->new() },
+    handles => [ qw(log_error log_reason warn) ],
+);
+
+has server => (
+    is      => 'rw',
+    default => sub { Plack::App::FakeApache::Server->new() },
 );
 
 # Apache related attributes
@@ -89,6 +106,33 @@ has location => (
     default => '/',
 );
 
+has filename => (
+    is         => 'rw',
+    isa        => 'Str|Undef',
+    lazy_build => 1,
+);
+
+has root => (
+    is         => 'rw',
+    isa        => 'Str',
+    default    => cwd(),
+);
+
+has is_initial_req => (
+    is         => 'ro',
+    isa        => 'Bool',
+    default    => 1,
+);
+
+has auth_type => (
+    is         => 'ro',
+    isa        => 'Str',
+);
+
+has auth_name => (
+    is         => 'ro',
+    isa        => 'Str',
+);
 
 # builders
 sub _build_plack_request  { return Plack::Request->new( shift->env ) }
@@ -118,6 +162,18 @@ sub _build_headers_in {
    return $table;
 }
 
+sub _build_filename {
+    my $self = shift;
+
+    my $paf = Plack::App::File->new(
+        root => $self->root
+    );
+    my ($file, $path) = $paf->locate_file( $self->env );
+
+    return undef if ref $file;  # some sort of error
+    return $file;
+}
+
 # Plack methods
 sub finalize { 
     my $self     = shift;
@@ -129,8 +185,13 @@ sub finalize {
     return $response->finalize;
 };
 
-# Appache methods
-sub log_reason { 1 } # TODO
+# Apache methods
+
+sub args {
+    my $self = shift;
+    return $self->plack_request->env->{QUERY_STRING};
+}
+
 sub hostname {
     my $self = shift;
 
@@ -141,7 +202,7 @@ sub subprocess_env {
     my $self = shift;
 
     if (@_ == 1) {
-        return $self->_subporcess_env->get( @_ );
+        return $self->_subprocess_env->get( @_ );
     }
 
     if (@_ == 2) {
@@ -154,6 +215,11 @@ sub subprocess_env {
 
     $self->_subprocess_env->do( sub { $ENV{ $_[0] } = $_[1]; 1 } );
     return;
+}
+
+sub document_root {
+    my $self = shift;
+    return $self->root;
 }
 
 sub pnotes {
@@ -178,6 +244,16 @@ sub notes {
     }
 
     return $old;
+}
+
+# this is strictly mocking Apache::Connection, and only partially
+sub connection {
+    my $self = shift;
+
+    return Plack::App::FakeApache::Connection->new(
+        remote_ip => $self->plack_request->address,
+        log       => $self->log,
+    );
 }
 
 sub read {
@@ -234,6 +310,21 @@ sub _add_content {
 
 sub rflush {
     1;
+}
+
+sub uri
+{
+    my $self = shift;
+    return $self->plack_request->uri->path;
+}
+
+sub construct_url
+{
+    my $self = shift;
+    my $path = shift;
+    my $uri  = URI->new($self->plack_request->uri);
+    $uri->path($path) if $path;
+    return $uri->as_string;
 }
 
 no Moose;
