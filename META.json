@@ -4,7 +4,7 @@
       "Peter Makholm, L<peter@makholm.net>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Module::Build version 0.4203",
    "license" : [
       "unknown"
    ],
@@ -16,14 +16,13 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.38"
+            "Module::Build" : "0.42"
          }
       },
       "runtime" : {
          "requires" : {
             "APR::Pool" : "0",
             "APR::Table" : "0",
-            "Moose" : "0",
             "Plack" : "0"
          }
       }
@@ -31,19 +30,25 @@
    "provides" : {
       "Plack::App::FakeApache" : {
          "file" : "lib/Plack/App/FakeApache.pm",
-         "version" : "0.03"
+         "version" : "0.04"
+      },
+      "Plack::App::FakeApache::Connection" : {
+         "file" : "lib/Plack/App/FakeApache/Connection.pm"
+      },
+      "Plack::App::FakeApache::Log" : {
+         "file" : "lib/Plack/App/FakeApache/Log.pm"
       },
       "Plack::App::FakeApache::Request" : {
-         "file" : "lib/Plack/App/FakeApache/Request.pm",
-         "version" : 0
+         "file" : "lib/Plack/App/FakeApache/Request.pm"
+      },
+      "Plack::App::FakeApache::Server" : {
+         "file" : "lib/Plack/App/FakeApache/Server.pm"
       },
       "Plack::App::FakeApache::Tie" : {
-         "file" : "lib/Plack/App/FakeApache.pm",
-         "version" : 0
+         "file" : "lib/Plack/App/FakeApache.pm"
       },
       "Plack::App::WrapApacheReq" : {
-         "file" : "lib/Plack/App/WrapApacheReq.pm",
-         "version" : "0"
+         "file" : "lib/Plack/App/WrapApacheReq.pm"
       }
    },
    "release_status" : "stable",
@@ -52,5 +57,5 @@
          "url" : "http://github.com/pmakholm/plack-app-wrapapachereq/tree/master"
       }
    },
-   "version" : "0.03"
+   "version" : "0.04"
 }
