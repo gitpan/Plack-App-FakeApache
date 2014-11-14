@@ -15,7 +15,7 @@ name: Plack-App-FakeApache
 provides:
   Plack::App::FakeApache:
     file: lib/Plack/App/FakeApache.pm
-    version: 0.04
+    version: 0.05
   Plack::App::FakeApache::Connection:
     file: lib/Plack/App/FakeApache/Connection.pm
   Plack::App::FakeApache::Log:
@@ -31,7 +31,8 @@ provides:
 requires:
   APR::Pool: 0
   APR::Table: 0
+  CGI::Emulate::PSGI: 0
   Plack: 0
 resources:
   repository: http://github.com/pmakholm/plack-app-wrapapachereq/tree/master
-version: 0.04
+version: 0.05
