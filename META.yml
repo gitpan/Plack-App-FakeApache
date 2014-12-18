@@ -2,6 +2,7 @@
 abstract: 'Wrapping mod_perl2 applications in Plack'
 author:
   - 'Peter Makholm, L<peter@makholm.net>'
+  - 'Override subrequest, more cgi.pm support and exit support by Kieren Diment L<zarquon@cpan.org>.'
 build_requires: {}
 configure_requires:
   Module::Build: 0.42
@@ -15,7 +16,7 @@ name: Plack-App-FakeApache
 provides:
   Plack::App::FakeApache:
     file: lib/Plack/App/FakeApache.pm
-    version: 0.05
+    version: 0.06
   Plack::App::FakeApache::Connection:
     file: lib/Plack/App/FakeApache/Connection.pm
   Plack::App::FakeApache::Log:
@@ -33,6 +34,7 @@ requires:
   APR::Table: 0
   CGI::Emulate::PSGI: 0
   Plack: 0
+  Try::Tiny: 0
 resources:
   repository: http://github.com/pmakholm/plack-app-wrapapachereq/tree/master
-version: 0.05
+version: 0.06
